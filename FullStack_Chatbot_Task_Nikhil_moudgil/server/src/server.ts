@@ -9,25 +9,21 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Connect to Database
+// Connect Database
 connectDB();
 
-// Middleware
-app.use(cors());
+// Express Middlewares
+app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
 app.use(express.json());
 
 // API Routes
 app.use('/api/enquiries', enquiryRoutes);
 
-// Health Check
-app.get('/health', (req, res) => {
-  res.status(200).json({ success: true, message: 'DroneTV API is running' });
+// Root Check
+app.get('/', (req, res) => {
+  res.send('DroneTV Backend API active.');
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
-// Root Endpoint
-app.get('/', (req, res) => {
-  res.send('DroneTV Backend API is running! Access endpoints at /api/enquiries');
+  console.log(`🚀 Server listening on port ${PORT}`);
 });

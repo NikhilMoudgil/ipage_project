@@ -1,18 +1,24 @@
 import { Request, Response } from 'express';
 import Enquiry from '../models/Enquiry';
 
-// GET /api/enquiries - Fetch all enquiries with optional search & filtering
+// Utility to escape regex special characters (prevents ReDoS attacks)
+const escapeRegex = (text: string) => {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+};
+
+// GET /api/enquiries - Fetch all enquiries with search & filtering
 export const getEnquiries = async (req: Request, res: Response) => {
   try {
     const { userType, search } = req.query;
-    let query: any = {};
+    let query: Record<string, any> = {};
 
     if (userType && userType !== 'All') {
       query.userType = userType;
     }
 
-    if (search) {
-      const searchRegex = new RegExp(search as string, 'i');
+    if (search && typeof search === 'string' && search.trim() !== '') {
+      const sanitizedSearch = escapeRegex(search.trim());
+      const searchRegex = new RegExp(sanitizedSearch, 'i');
       query.$or = [
         { name: searchRegex },
         { email: searchRegex },
@@ -23,8 +29,8 @@ export const getEnquiries = async (req: Request, res: Response) => {
 
     const enquiries = await Enquiry.find(query).sort({ createdAt: -1 });
     res.status(200).json({ success: true, count: enquiries.length, data: enquiries });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error retrieving enquiries.' });
+  } catch (error: any) {
+    res.status(500).json({ success: false, message: 'Server error retrieving enquiries.', error: error.message });
   }
 };
 
@@ -36,8 +42,11 @@ export const getEnquiryById = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Enquiry not found.' });
     }
     res.status(200).json({ success: true, data: enquiry });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Server error or invalid enquiry ID format.' });
+  } catch (error: any) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ success: false, message: 'Invalid enquiry ID format.' });
+    }
+    res.status(500).json({ success: false, message: 'Server error fetching enquiry.' });
   }
 };
 
@@ -46,8 +55,12 @@ export const createEnquiry = async (req: Request, res: Response) => {
   try {
     const enquiry = await Enquiry.create(req.body);
     res.status(201).json({ success: true, message: 'Enquiry submitted successfully!', data: enquiry });
-  } catch (error) {
-    res.status(500).json({ success: false, message: 'Failed to create enquiry.' });
+  } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((val: any) => val.message);
+      return res.status(400).json({ success: false, message: 'Validation error', errors: messages });
+    }
+    res.status(500).json({ success: false, message: 'Failed to create enquiry due to server error.' });
   }
 };
 
@@ -62,7 +75,14 @@ export const updateEnquiry = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Enquiry not found.' });
     }
     res.status(200).json({ success: true, message: 'Enquiry updated successfully.', data: enquiry });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((val: any) => val.message);
+      return res.status(400).json({ success: false, message: 'Validation error', errors: messages });
+    }
+    if (error.name === 'CastError') {
+      return res.status(400).json({ success: false, message: 'Invalid enquiry ID format.' });
+    }
     res.status(500).json({ success: false, message: 'Server error updating enquiry.' });
   }
 };
@@ -75,7 +95,10 @@ export const deleteEnquiry = async (req: Request, res: Response) => {
       return res.status(404).json({ success: false, message: 'Enquiry not found.' });
     }
     res.status(200).json({ success: true, message: 'Enquiry deleted successfully.' });
-  } catch (error) {
+  } catch (error: any) {
+    if (error.name === 'CastError') {
+      return res.status(400).json({ success: false, message: 'Invalid enquiry ID format.' });
+    }
     res.status(500).json({ success: false, message: 'Server error deleting enquiry.' });
   }
 };

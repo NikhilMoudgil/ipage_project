@@ -6,15 +6,20 @@ import {
   updateEnquiry,
   deleteEnquiry
 } from '../controllers/enquiryController';
-import { validateEnquiry } from '../middleware/validation';
+import { validateEnquiryPayload } from '../middleware/validation';
 
 const router = Router();
 
-router.get('/', getEnquiries);
-router.get('/:id', getEnquiryById);
-router.post('/', validateEnquiry, createEnquiry);
-router.put('/:id', updateEnquiry);
-router.patch('/:id', updateEnquiry);
-router.delete('/:id', deleteEnquiry);
+// Base collection routes (/api/enquiries)
+router.route('/')
+  .get(getEnquiries)
+  .post(validateEnquiryPayload, createEnquiry);
+
+// Individual resource routes (/api/enquiries/:id)
+router.route('/:id')
+  .get(getEnquiryById)
+  .patch(updateEnquiry)
+  .put(updateEnquiry)
+  .delete(deleteEnquiry);
 
 export default router;

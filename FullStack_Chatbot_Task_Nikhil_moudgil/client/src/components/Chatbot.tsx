@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ChatMessage } from '../types';
+import type { ChatMessage } from '../types';
 
 const PREDEFINED_QA: Record<string, string> = {
   "what services does dronetv provide?": "DroneTV provides Aerial Cinematography, Industrial Inspection, Mapping & Surveying, Event Live Streaming, and Agricultural Spraying.",

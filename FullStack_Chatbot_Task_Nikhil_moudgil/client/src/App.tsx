@@ -1,122 +1,91 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import { EnquiryForm } from './components/EnquiryForm';
+import { Chatbot } from './components/Chatbot';
+import { AdminDashboard } from './components/AdminDashboard';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App: React.FC = () => {
+  const [activeTab, setActiveTab] = useState<'form' | 'admin'>('form');
+
+  // Reusable card style for the grids
+  const cardStyle = {
+    background: '#fff', padding: '20px', borderRadius: '8px', 
+    boxShadow: '0 2px 4px rgba(0,0,0,0.05)', flex: '1', minWidth: '250px'
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div style={{ fontFamily: 'sans-serif', backgroundColor: '#f8fafc', minHeight: '100vh', padding: '20px' }}>
+      
+      {/* Top Navigation */}
+      <header style={{ textAlign: 'center', marginBottom: '40px' }}>
+        <h1 style={{ color: '#0f172a', fontSize: '2.5rem', marginBottom: '10px' }}>DroneTV 🚁</h1>
+        <p style={{ color: '#64748b', fontSize: '1.1rem', marginBottom: '20px' }}>
+          Certified Drone Training & Professional Aerial Services
+        </p>
 
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+        {/* View Switcher Tabs */}
+        <div style={{ display: 'inline-flex', background: '#e2e8f0', padding: '4px', borderRadius: '8px', gap: '4px' }}>
+          <button onClick={() => setActiveTab('form')} style={{ padding: '8px 20px', border: 'none', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', background: activeTab === 'form' ? '#ffffff' : 'transparent', color: activeTab === 'form' ? '#0f172a' : '#64748b' }}>
+            🏠 Home & Enquiry
+          </button>
+          <button onClick={() => setActiveTab('admin')} style={{ padding: '8px 20px', border: 'none', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', background: activeTab === 'admin' ? '#ffffff' : 'transparent', color: activeTab === 'admin' ? '#0f172a' : '#64748b' }}>
+            📊 Admin Dashboard
+          </button>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+      </header>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
-}
+      {/* Main Content Area */}
+      <main style={{ maxWidth: '1000px', margin: '0 auto' }}>
+        {activeTab === 'form' ? (
+          <div>
+            {/* --- NEW: Services Section --- */}
+            <section style={{ marginBottom: '40px' }}>
+              <h2 style={{ color: '#0f172a', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px', marginBottom: '20px' }}>Our Services</h2>
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={cardStyle}>
+                  <h3 style={{ color: '#0284c7', marginBottom: '10px' }}>🎥 Aerial Cinematography</h3>
+                  <p style={{ color: '#475569', fontSize: '14px', lineHeight: '1.5' }}>High-quality 4K/8K aerial filming for events, real estate, and commercial advertising.</p>
+                </div>
+                <div style={cardStyle}>
+                  <h3 style={{ color: '#0284c7', marginBottom: '10px' }}>🏗️ Industrial Inspection</h3>
+                  <p style={{ color: '#475569', fontSize: '14px', lineHeight: '1.5' }}>Safe, efficient drone inspections for infrastructure, towers, and hard-to-reach assets.</p>
+                </div>
+                <div style={cardStyle}>
+                  <h3 style={{ color: '#0284c7', marginBottom: '10px' }}>🗺️ Mapping & Surveying</h3>
+                  <p style={{ color: '#475569', fontSize: '14px', lineHeight: '1.5' }}>Precision topographical data and 3D modeling for construction and agriculture.</p>
+                </div>
+              </div>
+            </section>
 
-export default App
+            {/* --- NEW: Courses Section --- */}
+            <section style={{ marginBottom: '50px' }}>
+              <h2 style={{ color: '#0f172a', borderBottom: '2px solid #e2e8f0', paddingBottom: '10px', marginBottom: '20px' }}>Training Courses</h2>
+              <div style={{ display: 'flex', gap: '20px', flexWrap: 'wrap' }}>
+                <div style={cardStyle}>
+                  <h3 style={{ color: '#16a34a', marginBottom: '10px' }}>📜 DGCA Remote Pilot</h3>
+                  <p style={{ color: '#475569', fontSize: '14px', lineHeight: '1.5' }}>Official certification course covering regulations, flight dynamics, and practical flying.</p>
+                </div>
+                <div style={cardStyle}>
+                  <h3 style={{ color: '#16a34a', marginBottom: '10px' }}>🎬 Cinematic Masterclass</h3>
+                  <p style={{ color: '#475569', fontSize: '14px', lineHeight: '1.5' }}>Advanced techniques for camera settings, flight paths, and post-production editing.</p>
+                </div>
+              </div>
+            </section>
+
+            {/* Existing Form Section */}
+            <section id="contact">
+              <EnquiryForm />
+            </section>
+          </div>
+        ) : (
+          <AdminDashboard />
+        )}
+      </main>
+
+      {/* Floating Chatbot Assistant */}
+      <Chatbot />
+      
+    </div>
+  );
+};
+
+export default App;
