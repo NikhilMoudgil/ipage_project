@@ -16,17 +16,16 @@ A full-stack web application built for **DroneTV** featuring a responsive servic
 - [Environment Variables](#environment-variables)
 - [API Documentation](#api-documentation)
 - [Database Setup](#database-setup)
-- [Screenshots](#screenshots)
 
 ---
 
 ## Features
 
 ### Frontend (User Interface)
-- **Landing Page**: Showcase for DroneTV's professional services (Aerial Cinematography, Industrial Inspection, Mapping & Surveying) and training courses (DGCA Remote Pilot, Cinematic Masterclass)[cite: 32].
-- **Rule-Based AI Assistant**: Floating chatbot with quick-prompt buttons, message history, automated responses, and conversation reset functionality[cite: 32, 33].
+- **Landing Page**: Showcase for DroneTV's professional services (Aerial Cinematography, Industrial Inspection, Mapping & Surveying) and training courses (DGCA Remote Pilot, Cinematic Masterclass).
+- **Rule-Based AI Assistant**: Floating chatbot with quick-prompt buttons, message history, automated responses, and conversation reset functionality.
 - **Enquiry Form**: Form collecting user contact details, category (Customer/Student), service interest, and message.
-- **Client Validation**: Input validation for empty fields, email formats, and minimum 10-digit phone numbers with inline feedback[cite: 33, 34].
+- **Client Validation**: Input validation for empty fields, email formats, and minimum 10-digit phone numbers with inline feedback.
 
 ### Admin Dashboard
 - **Enquiry Management**: Overview table showing submitted leads with details, timestamps, and categories.
@@ -36,17 +35,17 @@ A full-stack web application built for **DroneTV** featuring a responsive servic
 
 ### Backend API & Security
 - **RESTful Endpoints**: Full CRUD operations for enquiries built on Express and Mongoose.
-- **Server-Side Validation**: Backend validation and sanitization preventing invalid submissions directly at the database boundary[cite: 34].
+- **Server-Side Validation**: Backend validation and sanitization preventing invalid submissions directly at the database boundary.
 - **CORS & Environment Configuration**: Configured CORS origin handling to prevent cross-origin issues during development and deployment.
 
 ---
 
 ## Tech Stack
 
-- **Frontend**: React.js, TypeScript, Vite, CSS3 / Custom Styles, Lucide Icons[cite: 32]
-- **Backend**: Node.js, Express.js, TypeScript, `tsx`[cite: 32, 33]
-- **Database**: MongoDB & Mongoose ORM[cite: 33]
-- **Environment Management**: `dotenv`, `cors`[cite: 34]
+- **Frontend**: React.js, TypeScript, Vite, CSS3 / Custom Styles, Lucide Icons.
+- **Backend**: Node.js, Express.js, TypeScript, `tsx`.
+- **Database**: MongoDB & Mongoose ORM.
+- **Environment Management**: `dotenv`, `cors`.
 
 ---
 ## Getting Started
@@ -102,6 +101,11 @@ JSON
   "createdAt": "2026-10-02T10:00:00.000Z",
   "updatedAt": "2026-10-02T10:00:00.000Z"
 }
+##  server/.env.example
+PORT=5000
+MONGO_URI=mongodb://127.0.0.1:27017/dronetv
+CLIENT_URL=http://localhost:5173
+NODE_ENV=development
 ## Project Architecture
 
 ```text
@@ -128,7 +132,6 @@ FullStack_Chatbot_Task_Nikhil_Moudgil/
     ├── package.json
     └── tsconfig.json
 
-Getting Started
 Prerequisites
 Ensure you have the following installed on your machine:
 
@@ -136,4 +139,4 @@ Node.js: v18.x or higher
 
 npm: v9.x or higher
 
-MongoDB: Local MongoDB server instance (mongodb://127.0.0.1:27017) or MongoDB Atlas URI[cite: 33]
+MongoDB: Local MongoDB server instance (mongodb://127.0.0.1:27017) or MongoDB Atlas URI
