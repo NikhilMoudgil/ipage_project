@@ -12,14 +12,33 @@ const PORT = process.env.PORT || 5000;
 // Connect Database
 connectDB();
 
-// Express Middlewares
-app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
+// CORS Middleware Configuration
+const allowedOrigins = [
+  'http://localhost:5173', // Vite default port
+  'http://localhost:3000', // React App default port
+  process.env.CLIENT_URL || ''
+].filter(Boolean);
+
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps, curl, or Postman)
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // API Routes
 app.use('/api/enquiries', enquiryRoutes);
 
-// Root Check
+// Root Health Check Route
 app.get('/', (req, res) => {
   res.send('DroneTV Backend API active.');
 });
